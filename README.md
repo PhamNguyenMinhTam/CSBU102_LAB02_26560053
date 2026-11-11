@@ -6,6 +6,8 @@
 
 Programs follow the original `CSBU102_LAB02.docx` assignment. Each source is a separate executable; the three required TN files reproduce the main outcome of their experiment.
 
+Every assembly file starts with the course, lab, student ID, assignment section, source filename, purpose and a register plan. Plans cover exactly the registers named in that file's instructions, including syscall arguments, `$zero` where used, and registers reused for different purposes. In intentional exception cases, the plans identify instructions that are not reached. Inline comments explain memory access, address calculations and syscall services.
+
 ## Requirements and running
 
 Use MARS 4.5 with Java, the default memory configuration, and extended (pseudo) instructions enabled. Enable **Initialize Program Counter to global main**. Open one `.asm` file, choose **Run > Assemble** (F3), then **Run > Go** (F5). Inspect registers and the Data Segment after execution; use decimal or hexadecimal display as appropriate. Reset before repeating a run. Disable **Assemble all files in directory** because these independent programs reuse labels such as `main` and `scores`.

@@ -1,7 +1,21 @@
+# ==================================================
+# Course: CSBU102 - Computer System
+# Lab: LAB 02 - Accessing Main Memory
 # Name: Pham Nguyen Minh Tam
 # Student ID: 26560053
-# LAB 02 - TN3 / Listing 8 - Capital letters
-# Purpose: Capitalize offsets 0, 7 and 11 and print Nguyen Van An.
+# Experiment 3 - Listing 8: Capital Letters
+# Source: Lab02_26560053_TN3.asm
+#
+# Purpose:
+# Capitalize offsets 0, 7 and 11 and print Nguyen Van An.
+#
+# Register Plan:
+# $s0 = Address of the first byte of str1
+# $t0 = Letter at offsets 0, 7, then 11; converted to N, V, then A
+# $a0 = Address of str1, then newline string, for syscall 4
+# $zero = Constant zero for copying the str1 address from s0 to a0
+# $v0 = Syscall service number: 4=print string, 10=exit
+# ==================================================
 .data
 str1: .asciiz "nguyen van an"
 tag:  .asciiz " [end]"
@@ -13,18 +27,18 @@ main:
     la   $s0, str1        # $s0 = first byte address
     lb   $t0, 0($s0)      # First letter n
     addi $t0, $t0, -32    # n -> N
-    sb   $t0, 0($s0)
+    sb   $t0, 0($s0)      # Store N at offset 0
     lb   $t0, 7($s0)      # First letter v of van
     addi $t0, $t0, -32    # v -> V
-    sb   $t0, 7($s0)
+    sb   $t0, 7($s0)      # Store V at offset 7
     lb   $t0, 11($s0)     # First letter a of an
     addi $t0, $t0, -32    # a -> A
-    sb   $t0, 11($s0)
-    li   $v0, 4
+    sb   $t0, 11($s0)     # Store A at offset 11
+    li   $v0, 4           # Select service: 4=print string
     add  $a0, $s0, $zero  # Print until a zero byte is encountered
-    syscall
-    li   $v0, 4
-    la   $a0, nl
-    syscall
-    li   $v0, 10         # Exit program
-    syscall
+    syscall               # Print zero-terminated string at $a0
+    li   $v0, 4           # Select service: 4=print string
+    la   $a0, nl          # Address of newline string
+    syscall               # Print zero-terminated string at $a0
+    li   $v0, 10          # Select service: 10=exit
+    syscall               # Exit program

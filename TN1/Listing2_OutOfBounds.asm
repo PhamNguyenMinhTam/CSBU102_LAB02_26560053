@@ -1,7 +1,24 @@
+# ==================================================
+# Course: CSBU102 - Computer System
+# Lab: LAB 02 - Accessing Main Memory
 # Name: Pham Nguyen Minh Tam
 # Student ID: 26560053
-# LAB 02 - Step 1.3 B - Intentional out-of-bounds read
-# Purpose: Read past scores; hardware does not enforce array bounds.
+# Experiment 1 - Listing 2: Base Plus Offset - Step 1.3 B (Intentional Out-of-Bounds Read)
+# Source: Listing2_OutOfBounds.asm
+#
+# Purpose:
+# Read past scores; hardware does not enforce array bounds.
+#
+# Register Plan:
+# $s0 = Base address of scores (0x10010000)
+# $s1 = Address of scores[2] (base + 8)
+# $t0 = Value of scores[0] (40)
+# $t1 = Word read at base + 20, beyond scores; not an array element
+# $t2 = Value of scores[4] (100)
+# $t3 = Value of scores[2] (70), loaded through s1
+# $t4 = Value of scores[1] (55), loaded at s1 - 4
+# $v0 = Syscall service number: 10=exit
+# ==================================================
 .data
 scores: .word 40, 55, 70, 85, 100
 
@@ -15,5 +32,5 @@ main:
     addi $s1, $s0, 8      # $s1 = address of scores[2]
     lw   $t3, 0($s1)      # $t3 = 70
     lw   $t4, -4($s1)     # $t4 = 55
-    li   $v0, 10         # Exit program
-    syscall
+    li   $v0, 10          # Select service: 10=exit
+    syscall               # Exit program
