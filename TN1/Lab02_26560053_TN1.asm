@@ -24,10 +24,17 @@ varA: .word 0
 .text
 .globl main
 main:
+    # Step 1: Load the variables from memory
     la   $t0, varB        # $t0 = base address of the three variables
     lw   $t1, 0($t0)      # $t1 = varB = 25
     lw   $t2, 4($t0)      # $t2 = varC = 17
+
+    # Step 2: Calculate the sum of varB and varC
     add  $t3, $t1, $t2    # $t3 = 42
+
+    # Step 3: Store the result in varA
     sw   $t3, 8($t0)      # varA = 42
+
+    # Step 4: Exit the program
     li   $v0, 10          # Select service: 10=exit
     syscall               # Exit program

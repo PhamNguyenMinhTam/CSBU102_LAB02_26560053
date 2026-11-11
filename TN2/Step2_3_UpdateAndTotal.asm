@@ -31,21 +31,32 @@ nl: .asciiz "\n"
 .text
 .globl main
 main:
+    # Step 1: Initialize the array base, k = 3 and V = 46
     la   $s0, scores      # $s0 = array base
     addi $s1, $zero, 3    # Last ID digit D=3 gives k=3
     addi $s2, $zero, 46   # $s2 = new value V
+
+    # Step 2: Calculate the address of scores[k]
     sll  $t1, $s1, 2      # $t1 = 4*k
     add  $t1, $t1, $s0    # $t1 = address of scores[k]
+
+    # Step 3: Store the replacement score
     sw   $s2, 0($t1)      # scores[3] = 46
+
+    # Step 4: Load all five scores using constant offsets
     lw   $t0, 0($s0)      # $t0 = 40
     lw   $t1, 4($s0)      # $t1 = 55
     lw   $t2, 8($s0)      # $t2 = 70
     lw   $t3, 12($s0)     # $t3 = 46
     lw   $t4, 16($s0)     # $t4 = 100
+
+    # Step 5: Calculate the total in $s3
     add  $s3, $t0, $t1    # $s3 accumulates the total
     add  $s3, $s3, $t2
     add  $s3, $s3, $t3
     add  $s3, $s3, $t4    # $s3 = 311; original total was 350
+
+    # Step 6: Print the total and a newline
     li   $v0, 4           # Select service: 4=print string
     la   $a0, msg         # Address of output message
     syscall               # Print zero-terminated string at $a0
@@ -55,5 +66,7 @@ main:
     li   $v0, 4           # Select service: 4=print string
     la   $a0, nl          # Address of newline string
     syscall               # Print zero-terminated string at $a0
+
+    # Step 7: Exit the program
     li   $v0, 10          # Select service: 10=exit
     syscall               # Exit program

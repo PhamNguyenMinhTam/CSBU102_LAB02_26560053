@@ -24,11 +24,18 @@ w: .word 0x41424344
 .text
 .globl main
 main:
+    # Step 1: Load the word address
     la   $s0, w           # $s0 = address of word w
+
+    # Step 2: Read the four individual bytes
     lb   $t0, 0($s0)      # 0x44 at lowest address
     lb   $t1, 1($s0)      # 0x43
     lb   $t2, 2($s0)      # 0x42
     lb   $t3, 3($s0)      # 0x41
+
+    # Step 3: Read the complete word
     lw   $t4, 0($s0)      # Whole word = 0x41424344
+
+    # Step 4: Exit the program
     li   $v0, 10          # Select service: 10=exit
     syscall               # Exit program

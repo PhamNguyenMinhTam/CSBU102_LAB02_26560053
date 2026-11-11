@@ -26,17 +26,26 @@ nl: .asciiz "\n"
 .text
 .globl main
 main:
+    # Step 1: Initialize the array base and index
     la   $s0, scores      # $s0 = array base
     addi $s1, $zero, 2    # $s1 = index i
+
+    # Step 2: Calculate the element address as base + 4*i
     sll  $t1, $s1, 2      # $t1 = 4 * i (byte offset)
     add  $t1, $t1, $s0    # $t1 = address of scores[i]
+
+    # Step 3: Load the selected score
     lw   $t2, 0($t1)      # $t2 = selected score
+
+    # Step 4: Print the message and selected score
     li   $v0, 4           # Select service: 4=print string
     la   $a0, msg         # Address of output message
     syscall               # Print zero-terminated string at $a0
     li   $v0, 1           # Select service: 1=print integer
     add  $a0, $t2, $zero  # Copy value to the print argument
     syscall               # Print integer in $a0
+
+    # Step 5: Print a newline and exit the program
     li   $v0, 4           # Select service: 4=print string
     la   $a0, nl          # Address of newline string
     syscall               # Print zero-terminated string at $a0

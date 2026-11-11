@@ -26,11 +26,18 @@ nl: .asciiz "\n"
 .text
 .globl main
 main:
+    # Step 1: Initialize the array base and index i = 3
     la   $s0, scores      # $s0 = array base
     addi $s1, $zero, 3    # $s1 = index i
+
+    # Step 2: Intentionally calculate the incorrect offset 2*i and address base + 6
     sll  $t1, $s1, 1      # INTENTIONAL: wrong byte offset 2*i = 6
     add  $t1, $t1, $s0    # INTENTIONAL: base + 6, not the address of scores[3]
+
+    # Step 3: Attempt the unaligned word load at base + 6
     lw   $t2, 0($t1)      # INTENTIONAL: lw raises an alignment exception
+
+    # Step 4: Remaining output and exit (not reached after the expected exception)
     li   $v0, 4           # Select service: 4=print string
     la   $a0, msg         # Address of output message
     syscall               # Print zero-terminated string at $a0

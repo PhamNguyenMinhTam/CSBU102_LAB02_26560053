@@ -21,8 +21,15 @@ b1: .byte 0xF0
 .text
 .globl main
 main:
+    # Step 1: Load the byte address
     la   $s0, b1          # $s0 = address of byte b1
+
+    # Step 2: Load the byte with sign extension
     lb   $t0, 0($s0)      # 0xFFFFFFF0 = -16
+
+    # Step 3: Load the same byte with zero extension
     lbu  $t1, 0($s0)      # 0x000000F0 = 240
+
+    # Step 4: Exit the program
     li   $v0, 10          # Select service: 10=exit
     syscall               # Exit program

@@ -25,12 +25,19 @@ scores: .word 40, 55, 70, 85, 100
 .text
 .globl main
 main:
+    # Step 1: Load the array base address
     la   $s0, scores      # $s0 = base address 0x10010000
+
+    # Step 2: Read the first score and intentionally read base + 20 beyond the array (no bounds exception required)
     lw   $t0, 0($s0)      # $t0 = scores[0] = 40
     lw   $t1, 20($s0)     # INTENTIONAL: aligned word after the array
+
+    # Step 3: Perform the remaining offset reads
     lw   $t2, 16($s0)     # $t2 = scores[4] = 100
     addi $s1, $s0, 8      # $s1 = address of scores[2]
     lw   $t3, 0($s1)      # $t3 = 70
     lw   $t4, -4($s1)     # $t4 = 55
+
+    # Step 4: Exit the program
     li   $v0, 10          # Select service: 10=exit
     syscall               # Exit program

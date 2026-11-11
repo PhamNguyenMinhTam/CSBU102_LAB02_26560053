@@ -22,15 +22,22 @@ nl: .asciiz "\n"
 .text
 .globl main
 main:
+    # Step 1: Print the introductory message
     li   $v0, 4           # Select service: 4=print string
     la   $a0, msg         # Address of output message
     syscall               # Print zero-terminated string at $a0
+
+    # Step 2: Load and print the value of x
     la   $t0, x           # $t0 = address of x
     lw   $a0, 0($t0)      # $a0 = value read from x
     li   $v0, 1           # Select service: 1=print integer
     syscall               # Print integer in $a0
+
+    # Step 3: Print a newline
     li   $v0, 4           # Select service: 4=print string
     la   $a0, nl          # Address of newline string
     syscall               # Print zero-terminated string at $a0
+
+    # Step 4: Exit the program
     li   $v0, 10          # Select service: 10=exit
     syscall               # Exit program

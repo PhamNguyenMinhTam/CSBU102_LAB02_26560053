@@ -25,13 +25,20 @@ word1: .asciiz "Hi!"
 .text
 .globl main
 main:
+    # Step 1: Load the string base address
     la   $s0, word1       # $s0 = first byte address
+
+    # Step 2: Read the three characters and null terminator
     lb   $t0, 0($s0)      # H = 0x48
     lb   $t1, 1($s0)      # i = 0x69
     lb   $t2, 2($s0)      # ! = 0x21
     lb   $t3, 3($s0)      # Null terminator = 0
+
+    # Step 3: Print the character stored in $t1
     li   $v0, 11          # Select service: 11=print character
     add  $a0, $t1, $zero  # Print i
     syscall               # Print character in $a0
+
+    # Step 4: Exit the program
     li   $v0, 10          # Select service: 10=exit
     syscall               # Exit program

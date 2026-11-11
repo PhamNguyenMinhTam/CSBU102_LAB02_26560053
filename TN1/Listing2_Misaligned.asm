@@ -25,9 +25,14 @@ scores: .word 40, 55, 70, 85, 100
 .text
 .globl main
 main:
+    # Step 1: Load the array base and first score
     la   $s0, scores      # $s0 = base address 0x10010000
     lw   $t0, 0($s0)      # $t0 = scores[0] = 40
+
+    # Step 2: Attempt the intentional unaligned word load at base + 2
     lw   $t1, 2($s0)      # INTENTIONAL: unaligned address 0x10010002
+
+    # Step 3: Remaining original reads and exit (not reached after the expected exception)
     lw   $t2, 16($s0)     # $t2 = scores[4] = 100
     addi $s1, $s0, 8      # $s1 = address of scores[2]
     lw   $t3, 0($s1)      # $t3 = 70
